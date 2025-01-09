@@ -1,0 +1,23 @@
+{
+  "name": "apod-map",
+  "version": "1.0.0",
+  "description": "Explore the geographical distribution of photos from NASA's Astronomy Picture of the Day archive",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Michael Chung",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "openai": "^4.76.1",
+    "ol": "^10.3.1"
+  },
+  "engines": {
+    "node": ">=23.3.0"
+  }
+}

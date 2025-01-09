@@ -1,0 +1,13 @@
+{
+  "name": "apod-map",
+  "version": "1.0.0",
+  "description": "Inspired by NASA's [Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html) archive.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "concurrently \"npm run start-backend\" \"npm run dev-frontend\"",
+    "start-backend": "cd backend && node server.js",
+    "dev-frontend": "cd frontend && npm start"
+  },
+  "author": "Michael Chung",
+  "license": "ISC"
+}
