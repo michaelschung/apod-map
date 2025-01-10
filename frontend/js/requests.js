@@ -45,8 +45,8 @@ export async function openaiReq(apodData) {
             "Space" and ignore the coordinates.
             2. If there is a "copyright" attribute, then the "copyright"
             value may include important information, such as an observatory.
-            If there's an observatory mentioned, then give the location and
-            coordinates of the observatory in the formats specified above.
+            If there's an observatory mentioned, then list it as the location
+            and do a web search for the observatory's coordinates.
             3. If there is a "copyright" attribute, and the "explanation"
             blurb mentions where the photo was taken, then format the
             location and coordinates. If the location is not very specific -
@@ -55,11 +55,13 @@ export async function openaiReq(apodData) {
             4. If there is a "copyright" attribute with the name of the
             photographer, and the "explanation" blurb does not mention where
             the photo was taken, then do a web search for "[photographer]
-            astrophotographer", and find the location information that way.
+            astrophotographer location", and find the location and coordinate
+            information that way.
             5. If all of the above fail, then simply list the location as
             "Unknown" and ignore the coordinates.
     `
-    return await openaiReqWithPrompt(sysPrompt, JSON.stringify(apodData));
+    return openaiReqWithPrompt(sysPrompt, JSON.stringify(apodData))
+        .then((data) => data);
 }
 
 // Fetches APOD data from backend, optionally filtered by date range
@@ -68,7 +70,7 @@ export async function apodReq(startDate=null, endDate=null) {
     if (startDate) url.searchParams.append("start_date", startDate);
     if (endDate) url.searchParams.append("end_date", endDate);
 
-    return await fetch(url, { method: "GET" })
+    return fetch(url, { method: "GET" })
         .then(response => response.json())
         .then((data) => data)
         .catch(error => console.error("Error:", error));

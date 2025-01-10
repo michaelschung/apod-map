@@ -14,7 +14,7 @@ module.exports = (openai) => {
 
             console.log("Completion received");
             const content = completion.choices[0].message.content;
-            console.log(content);
+            // console.log(content);
             res.json(content);
         } catch (error) {
             console.error("Error:", error);

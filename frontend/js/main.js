@@ -17,7 +17,9 @@ const map = new Map({
     })
 });
 
-const data = await apodReq("2024-12-25");
-console.log(data);
-const locations = await openaiReq(data);
-console.log(locations);
+apodReq("2024-12-25").then((data) => {
+    console.log(data);
+    // openaiReq(data).then((locations) => {
+    //     console.log(locations);
+    // });
+});
