@@ -1,10 +1,6 @@
 import "../css/style.css";
 import { apodReq, openaiReq } from "./requests.js";
-import { getPinsLayer } from "./map.js";
-
-import { Map, View } from "ol";
-import TileLayer from "ol/layer/Tile";
-import OSM from "ol/source/OSM";
+import { drawPins } from "./map.js";
 
 const coordSet = [
     [4.899431, 52.379189],
@@ -14,24 +10,7 @@ const coordSet = [
     [151.2093, -33.8688]
 ];
 
-var defaultView = new View({
-    center: [0, 0],
-    zoom: 2
-});
-
-const pinsLayer = getPinsLayer(coordSet);
-
-// Create the map
-var map = new Map({
-    target: "map",
-    layers: [
-        new TileLayer({
-            source: new OSM()  // OpenStreetMap base layer
-        }),
-        pinsLayer
-    ],
-    view: defaultView
-});
+drawPins(coordSet);
 
 // apodReq("2024-12-25").then((data) => {
 //     console.log(data);

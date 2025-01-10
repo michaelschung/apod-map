@@ -1,3 +1,6 @@
+import { Map, View } from "ol";
+import TileLayer from "ol/layer/Tile";
+import OSM from "ol/source/OSM";
 import { fromLonLat } from "ol/proj";
 import Feature from "ol/Feature";
 import Point from "ol/geom/Point";
@@ -5,8 +8,13 @@ import { Icon, Style } from "ol/style";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 
-export function getPinsLayer(coordSet) {
-    // Create a vector source and layer for the pin
+export function drawPins(coordSet) {
+    var defaultView = new View({
+        center: [0, 0],
+        zoom: 2
+    });
+
+    // Create a vector source and layer for the pins
     var vectorSource = new VectorSource({
         features: []
     });
@@ -29,9 +37,19 @@ export function getPinsLayer(coordSet) {
     }
 
     // Create a vector layer with the pin
-    var vectorLayer = new VectorLayer({
+    var pinsLayer = new VectorLayer({
         source: vectorSource
     });
 
-    return vectorLayer;
+    // Create the map
+    var map = new Map({
+        target: "map",
+        layers: [
+            new TileLayer({
+                source: new OSM()  // OpenStreetMap base layer
+            }),
+            pinsLayer
+        ],
+        view: defaultView
+    });
 }
