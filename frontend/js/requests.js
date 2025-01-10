@@ -30,7 +30,7 @@ export async function openaiReq(apodData) {
         not include markdown formatting or any other formatting.
             - date: date of the photo/video
             - location: location where photo/video was taken
-            - coords: coordinates of the location in the format "lat, long"
+            - coords: coordinates of the location in the format "lat,long"
             - url: URL to actual photo/video
             - thumb: URL to thumbnail of photo/video
         If the original "media_type" is "video", then use the "thumbnail_url"

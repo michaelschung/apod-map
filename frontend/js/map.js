@@ -8,12 +8,7 @@ import { Icon, Style } from "ol/style";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 
-export function drawPins(coordSet) {
-    var defaultView = new View({
-        center: [0, 0],
-        zoom: 2
-    });
-
+function getPinsLayer(coordSet) {
     // Create a vector source and layer for the pins
     var vectorSource = new VectorSource({
         features: []
@@ -28,25 +23,33 @@ export function drawPins(coordSet) {
         // Style for the pin (you can customize it)
         pin.setStyle(new Style({
             image: new Icon({
-                src: "https://openlayers.org/en/v4.6.5/examples/data/icon.png", // Pin icon image URL
-                scale: 1
+                src: "https://cdn-icons-png.flaticon.com/512/9356/9356230.png",
+                // src: "https://openlayers.org/en/v4.6.5/examples/data/icon.png", // Pin icon image URL
+                scale: 0.07
             })
         }));
         
         vectorSource.addFeature(pin);
     }
 
-    // Create a vector layer with the pin
-    var pinsLayer = new VectorLayer({
-        source: vectorSource
+    // Create/return a vector layer with the pins
+    return new VectorLayer({ source: vectorSource });
+}
+
+export function drawPins(coordSet) {
+    var defaultView = new View({
+        center: [0, 0],
+        zoom: 2
     });
+
+    var pinsLayer = getPinsLayer(coordSet);
 
     // Create the map
     var map = new Map({
         target: "map",
         layers: [
             new TileLayer({
-                source: new OSM()  // OpenStreetMap base layer
+                source: new OSM()
             }),
             pinsLayer
         ],
