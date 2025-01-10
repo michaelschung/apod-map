@@ -31,15 +31,16 @@ fetch('/api/openai/completion', {
     .catch((error) => console.error(error));
 */
 
-fetch('/api/apod', {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-        "start_date": "2024-12-25"
-    }),
-})
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((error) => console.error(error));
+function fetchAPOD(startDate=null, endDate=null) {
+    const url = new URL('/api/apod', window.location.origin);
+    console.log(url.toString());
+    if (startDate) url.searchParams.append('start_date', startDate);
+    if (endDate) url.searchParams.append('end_date', endDate);
+
+    fetch(url, { method: 'GET' })
+        .then(response => response.json())
+        .then((data) => console.log(data))
+        .catch(error => console.error('Error:', error));
+}
+
+fetchAPOD("2024-12-25");

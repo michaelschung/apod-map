@@ -59,8 +59,14 @@ app.post("/api/openai/completion", async (req, res) => {
 // ===== APOD ROUTES =====
 
 app.get("/api/apod", async (req, res) => {
+    const url = new URL("https://api.nasa.gov/planetary/apod");
+    url.searchParams.append("api_key", NASA_API_KEY);
+    // Pass along any query parameters
+    for (const key in req.query) {
+        url.searchParams.append(key, req.query[key]);
+    }
     try {
-        const response = await fetch("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY");
+        const response = await fetch(url);
         const data = await response.json();
         res.json(data);
     } catch (error) {
