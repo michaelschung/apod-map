@@ -10,8 +10,9 @@ dotenv.config()
 const app = express();
 const defaultPort = 3000;
 
-// Pick up environment variables (if they exist)
-const API_KEY = process.env.OPENAI_API_KEY;
+// Pick up environment variables
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const NASA_API_KEY = process.env.NASA_API_KEY;
 const PORT = process.env.PORT || defaultPort;
 
 // Middleware
@@ -34,7 +35,7 @@ app.use(
 );
 
 // OpenAI configuration
-const openai = new OpenAI({ apiKey: API_KEY });
+const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
 // ===== OPENAI ROUTES =====
 
