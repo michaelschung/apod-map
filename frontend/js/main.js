@@ -11,8 +11,17 @@ import { Icon, Style } from "ol/style";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 
-var coords = [4.899431, 52.379189];
-var view = new View({
+const coordSet = [
+    [4.899431, 52.379189],
+    [-74.006, 40.7128],
+    [139.6917, 35.6895],
+    [-3.703790, 40.416775],
+    [151.2093, -33.8688]
+];
+
+// var coords = [4.899431, 52.379189];
+
+var defaultView = new View({
     center: [0, 0],
     zoom: 2
 });
@@ -22,20 +31,22 @@ var vectorSource = new VectorSource({
     features: []
 });
 
-// Create a pin (point feature) at the given coordinates
-var pin = new Feature({
-    geometry: new Point(fromLonLat(coords)) // Convert lon/lat to map projection
-});
-
-// Style for the pin (you can customize it)
-pin.setStyle(new Style({
-    image: new Icon({
-        src: "https://openlayers.org/en/v4.6.5/examples/data/icon.png", // Pin icon image URL
-        scale: 1
-    })
-}));
-
-vectorSource.addFeature(pin);
+for (const coords of coordSet) {
+    // Create a pin (point feature) at the given coordinates
+    var pin = new Feature({
+        geometry: new Point(fromLonLat(coords)) // Convert lon/lat to map projection
+    });
+    
+    // Style for the pin (you can customize it)
+    pin.setStyle(new Style({
+        image: new Icon({
+            src: "https://openlayers.org/en/v4.6.5/examples/data/icon.png", // Pin icon image URL
+            scale: 1
+        })
+    }));
+    
+    vectorSource.addFeature(pin);
+}
 
 // Create a vector layer with the pin
 var vectorLayer = new VectorLayer({
@@ -51,7 +62,7 @@ var map = new Map({
         }),
         vectorLayer
     ],
-    view: view
+    view: defaultView
 });
 
 // apodReq("2024-12-25").then((data) => {
