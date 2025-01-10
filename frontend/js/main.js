@@ -1,5 +1,5 @@
 import "../css/style.css";
-import { fetchAPOD } from "./apod.js";
+import { apodReq, openaiReq } from "./requests.js";
 import { Map, View } from "ol";
 import TileLayer from "ol/layer/Tile";
 import OSM from "ol/source/OSM";
@@ -17,19 +17,7 @@ const map = new Map({
     })
 });
 
-/*
-fetch("/api/openai/completion", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json",
-    },
-    body: JSON.stringify([
-        {"role": "user", "content": "write a haiku about ai"}
-    ]),
-})
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((error) => console.error(error));
-*/
-
-fetchAPOD("2024-12-25");
+const data = await apodReq("2024-12-25");
+console.log(data);
+const locations = await openaiReq(data);
+console.log(locations);

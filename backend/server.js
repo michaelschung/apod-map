@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path")
 const OpenAI = require("openai");
 var session = require("express-session");
 
@@ -31,7 +30,7 @@ app.use(
 // OpenAI configuration
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
-// ===== API ROUTES =====
+// ===== API routes =====
 const openaiRoutes = require("./routes/openai");
 const apodRoutes = require("./routes/apod");
 app.use("/api/openai", openaiRoutes(openai));
@@ -39,5 +38,5 @@ app.use("/api/apod", apodRoutes(NASA_API_KEY));
 
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`API server running on port ${PORT}`);
 });
