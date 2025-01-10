@@ -19,10 +19,10 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "public")));
 
 // Serve node_modules from the "node_modules" directory
-app.use("/node_modules", express.static(path.join(__dirname, "node_modules")));
+// app.use("/node_modules", express.static(path.join(__dirname, "node_modules")));
 
 // Session setup
 app.use(
@@ -36,6 +36,8 @@ app.use(
 // OpenAI configuration
 const openai = new OpenAI({ apiKey: API_KEY });
 
+// ===== OPENAI ROUTES =====
+
 app.post("/api/openai/completion", async (req, res) => {
     try {
         const prompt = req.body;
@@ -47,6 +49,19 @@ app.post("/api/openai/completion", async (req, res) => {
 
         console.log("Completion:", completion);
         res.json({ message: completion.choices[0].message.content });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ error: "Something went wrong" });
+    }
+});
+
+// ===== APOD ROUTES =====
+
+app.get("/api/apod", async (req, res) => {
+    try {
+        const response = await fetch("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY");
+        const data = await response.json();
+        res.json(data);
     } catch (error) {
         console.error("Error:", error);
         res.status(500).json({ error: "Something went wrong" });
