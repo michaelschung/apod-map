@@ -8,7 +8,7 @@ module.exports = (openai) => {
             const prompt = req.body;
 
             const completion = await openai.chat.completions.create({
-                model: "gpt-4o",
+                model: "gpt-4o-mini",
                 messages: prompt
             });
 

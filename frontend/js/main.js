@@ -19,7 +19,7 @@ const map = new Map({
 
 apodReq("2024-12-25").then((data) => {
     console.log(data);
-    // openaiReq(data).then((locations) => {
-    //     console.log(locations);
-    // });
+    openaiReq(data).then((locations) => {
+        console.log(locations);
+    });
 });

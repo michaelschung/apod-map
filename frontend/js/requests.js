@@ -23,11 +23,11 @@ Note to self:
 */
 export async function openaiReq(apodData) {
     const sysPrompt = `
-        You are about to receive a JSON file containing data from NASA's
+        You are about to receive a JSON array containing data from NASA's
         Astronomy Picture of the Day archive, covering a range of dates.
-        Please extract the following information from each item, and return
-        the collated result as a single raw JSON blob. Do not include
-        markdown formatting or any other formatting.
+        Please extract the following information from each object in the
+        array, and return the collated result as a single raw JSON blob. Do
+        not include markdown formatting or any other formatting.
             - date: date of the photo/video
             - location: location where photo/video was taken
             - coords: coordinates of the location in the format "lat, long"
@@ -35,23 +35,24 @@ export async function openaiReq(apodData) {
             - thumb: URL to thumbnail of photo/video
         If the original "media_type" is "video", then use the "thumbnail_url"
         for "thumb" in your output. If the original "media_type" is "image",
-        then ignore the "thumb" attribute.
-        The location is a little tricky. Here's an ordered list of steps
+        then leave out the "thumb" attribute entirely.
+        The "location" is a little tricky. Here's an ordered list of steps
         to break that down. Treat these steps as a series of "if-elif-else"
-        statements - in other words, once one applies to a given item,
-        then you do not need to continue checking; move on to the next item.
+        statements - in other words, once one applies to a given object,
+        then you do not need to continue checking; move on to the next
+        object.
             1. If there is no "copyright" attribute, then this is an official
             NASA image, taken from space. Please list the location simply as
-            "Space" and ignore the coordinates.
-            2. If there is a "copyright" attribute, then the "copyright"
+            "Space" and leave out the "coords" attribute entirely.
+            2. If there is a "copyright" attribute, and the "explanation"
+            blurb mentions where the photo was taken, then format the
+            "location" and "coords". If the location is not very specific -
+            a.k.a. an entire country - then give an approximate coordinates
+            anyway.
+            3. If there is a "copyright" attribute, then the "copyright"
             value may include important information, such as an observatory.
             If there's an observatory mentioned, then list it as the location
             and do a web search for the observatory's coordinates.
-            3. If there is a "copyright" attribute, and the "explanation"
-            blurb mentions where the photo was taken, then format the
-            location and coordinates. If the location is not very specific -
-            a.k.a. an entire country - then give an approximate coordinates
-            anyway.
             4. If there is a "copyright" attribute with the name of the
             photographer, and the "explanation" blurb does not mention where
             the photo was taken, then do a web search for "[photographer]
@@ -59,6 +60,9 @@ export async function openaiReq(apodData) {
             information that way.
             5. If all of the above fail, then simply list the location as
             "Unknown" and ignore the coordinates.
+        Please note that as long as there is a "copyright" attribute, you
+        must not list "Space" as the location. If there is no "copyright"
+        attribute, you must list "Space" as the location.
     `
     return openaiReqWithPrompt(sysPrompt, JSON.stringify(apodData))
         .then((data) => data);
