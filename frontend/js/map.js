@@ -9,18 +9,18 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 
 function getPinsLayer(coordSet) {
-    // Create a vector source and layer for the pins
+    // Create vector source to hold pin features
     var vectorSource = new VectorSource({
         features: []
     });
 
     for (const coords of coordSet) {
-        // Create a pin (point feature) at the given coordinates
+        // Create a pin (point feature) at given coordinates
         var pin = new Feature({
-            geometry: new Point(fromLonLat(coords)) // Convert lon/lat to map projection
+            geometry: new Point(fromLonLat(coords))
         });
         
-        // Style for the pin (you can customize it)
+        // Style for the pin
         pin.setStyle(new Style({
             image: new Icon({
                 src: "https://cdn-icons-png.flaticon.com/512/9356/9356230.png",
@@ -32,27 +32,30 @@ function getPinsLayer(coordSet) {
         vectorSource.addFeature(pin);
     }
 
-    // Create/return a vector layer with the pins
+    // Create/return vector layer with the pins
     return new VectorLayer({ source: vectorSource });
 }
 
-export function drawPins(coordSet) {
+export function initMap() {
     var defaultView = new View({
         center: [0, 0],
         zoom: 2
     });
 
-    var pinsLayer = getPinsLayer(coordSet);
-
-    // Create the map
-    var map = new Map({
+    const map = new Map({
         target: "map",
         layers: [
             new TileLayer({
                 source: new OSM()
-            }),
-            pinsLayer
+            })
         ],
         view: defaultView
     });
+
+    return map;
+}
+
+export function addPins(map, coordSet) {
+    var pinsLayer = getPinsLayer(coordSet);
+    map.addLayer(pinsLayer);
 }
