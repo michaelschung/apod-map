@@ -28,41 +28,45 @@ export async function openaiReq(apodData) {
         Please extract the following information from each object in the
         array, and return the collated result as a single raw JSON blob. Do
         not include markdown formatting or any other formatting.
+            - copyright: credit for the photo
             - date: date of the photo/video
-            - location: location where photo/video was taken
-            - coords: coordinates of the location in the format "lat,long"
+            - location: location from which the photo/video was taken
             - url: URL to actual photo/video
             - thumb: URL to thumbnail of photo/video
         If the original "media_type" is "video", then use the "thumbnail_url"
         for "thumb" in your output. If the original "media_type" is "image",
         then leave out the "thumb" attribute entirely.
-        The "location" is a little tricky. Here's an ordered list of steps
-        to break that down. Treat these steps as a series of "if-elif-else"
-        statements - in other words, once one applies to a given object,
-        then you do not need to continue checking; move on to the next
-        object.
-            1. If there is no "copyright" attribute, then this is an official
-            NASA image, taken from space. Please list the location simply as
-            "Space" and leave out the "coords" attribute entirely.
-            2. If there is a "copyright" attribute, and the "explanation"
-            blurb mentions where the photo was taken, then format the
-            "location" and "coords". If the location is not very specific -
-            a.k.a. an entire country - then give an approximate coordinates
-            anyway.
-            3. If there is a "copyright" attribute, then the "copyright"
-            value may include important information, such as an observatory.
-            If there's an observatory mentioned, then list it as the location
-            and do a web search for the observatory's coordinates.
-            4. If there is a "copyright" attribute with the name of the
-            photographer, and the "explanation" blurb does not mention where
-            the photo was taken, then do a web search for "[photographer]
-            astrophotographer location", and find the location and coordinate
-            information that way.
-            5. If all of the above fail, then simply list the location as
-            "Unknown" and ignore the coordinates.
-        Please note that as long as there is a "copyright" attribute, you
-        must not list "Space" as the location. If there is no "copyright"
-        attribute, you must list "Space" as the location.
+        The "location" is a little tricky. Here's how to break that down.
+            1. If the object has no "copyright" attribute, then this is an
+            official NASA image, taken from space. Please list the location
+            simply as "Space", and ignore "copyright" in the output.
+            2. If there is a "copyright" attribute, then this photo was NOT
+            taken from space. Here's what to check next:
+                2a. If the "explanation" blurb mentions where the photo was
+                taken from, then use that as the "location", even if it's not
+                very specific (i.e., an entire country).
+                2b. If the "explanation" blurb does not mention where the
+                photo was taken from, then list the location as "Unknown".
+            Note: The location should never be reported as "Space" if the
+            original object has a "copyright" attribute.
+        Once you have determined a "location", then add one more attribute:
+            - coords: latitude and longitude of the location from which the
+            photo/video was taken, in the format "latitude,longitude"
+        Here is a bit of extra guidance for how to get the "coords":
+            1. If the "location" attribute is a specific place on Earth, then
+            your job is simple: just give the latitude and longitude of that
+            location, using a web search if necessary. It's okay to use a
+            single set of coordinates for an entire country or city.
+            2. If the "location" attribute is "Space", then leave out the
+            "coords" attribute entirely.
+            3. If the "location" attribute is "Unknown", then take a look at
+            the "copyright" attribute:
+                3a. If the "copyright" attribute contains the name of an
+                observatory, then use the coordinates of that observatory.
+                3b. If the "copyright" attribute contains the name of the
+                photographer, then use a web search to find the coordinates
+                of where that photographer is based.
+            If all of the above fails, then leave out the "coords" attribute.
     `
     return openaiReqWithPrompt(sysPrompt, JSON.stringify(apodData))
         .then((data) => data);
