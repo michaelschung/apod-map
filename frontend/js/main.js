@@ -22,8 +22,10 @@ function extractLocations(data) {
 }
 
 apodReq(startDate, endDate).then((raw_apod_data) => {
+    console.log(raw_apod_data);
     openaiReq(raw_apod_data).then((data) => {
         const coordSet = extractLocations(data);
+        console.log(coordSet);
         addPins(map, coordSet);
     });
 });

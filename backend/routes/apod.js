@@ -5,10 +5,10 @@ module.exports = (NASA_API_KEY) => {
 
     router.get("/", async (req, res) => {
         const url = new URL("https://api.nasa.gov/planetary/apod");
-        // Add API key to the URL
+        // Add API key and thumbs as query parameters
         url.searchParams.append("api_key", NASA_API_KEY);
         url.searchParams.append("thumbs", true);
-        // Pass along any query parameters
+        // Pass along any query parameters from frontend
         for (const key in req.query) {
             url.searchParams.append(key, req.query[key]);
         }
