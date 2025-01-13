@@ -75,6 +75,7 @@ export function initMap() {
                 <a href="${src}" target="_blank">
                     <img src="${imgUrl}" alt="Pin Image">
                 </a>
+                <p>Date: ${pinDetails.date}</p>
                 <p>Credit: ${pinDetails.copyright}</p>
             `;
             popupOverlay.setPosition(feature.getGeometry().getCoordinates());
