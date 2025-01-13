@@ -31,8 +31,10 @@ html, body {
     border-radius: 4px;
     border: 1px solid #ccc;
     z-index: 1000;
-    transform: translate(-50%, -100%); /* Position the pop-up above the pin */
+    /* Position the pop-up above the pin */
+    transform: translate(-50%, -100%);
     white-space: nowrap;
+    /* object-fit */
 }
 
 #map {
