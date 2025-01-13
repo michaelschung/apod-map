@@ -9,16 +9,19 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 
 export function initMap() {
+    // Default view: whole world
     var defaultView = new View({
         center: [0, 0],
         zoom: 2
     });
 
+    // Layer for pins
     const pinsLayer = new VectorLayer({
         source: new VectorSource({ features: [] })
     });
     pinsLayer.set("name", "pinsLayer");
 
+    // Create the map
     const map = new Map({
         target: "map",
         layers: [
@@ -30,13 +33,24 @@ export function initMap() {
         view: defaultView
     });
 
+    map.on('singleclick', (event) => {
+        map.forEachFeatureAtPixel(event.pixel, (feature) => {
+            const pinDetails = feature.get('details');
+            if (pinDetails) {
+                console.log(pinDetails);
+            }
+        });
+    });
+
     return map;
 }
 
-function addPin(pinsLayer, coords) {
+function addPin(pinsLayer, obj) {
     // Create a pin (point feature) at given coordinates
+    const lonLat = obj.coords.split(",").map(Number).reverse()
     var pin = new Feature({
-        geometry: new Point(fromLonLat(coords))
+        geometry: new Point(fromLonLat(lonLat)),
+        details: obj
     });
 
     // Style for the pin
@@ -50,8 +64,12 @@ function addPin(pinsLayer, coords) {
     pinsLayer.getSource().addFeature(pin);
 }
 
-export function addPins(map, coordSet) {
+export function addPins(map, data) {
     // Get pins layer, add all coords
     const pinsLayer = map.getLayers().getArray().find(layer => layer.get('name') === 'pinsLayer');
-    coordSet.forEach(coords => addPin(pinsLayer, coords));
+    for (const obj of data) {
+        if (obj.coords) {
+            addPin(pinsLayer, obj);
+        }
+    }
 }

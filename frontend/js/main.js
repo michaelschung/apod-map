@@ -30,9 +30,7 @@ function batch_requests(data, batchSize) {
     for (let i = 0; i < data.length; i += batchSize) {
         const batch = data.slice(i, i + batchSize);
         openaiReq(batch).then((data) => {
-            const coordSet = extractCoordinates(data);
-            console.log(coordSet);
-            addPins(map, coordSet);
+            addPins(map, data);
         });
     }
 }
