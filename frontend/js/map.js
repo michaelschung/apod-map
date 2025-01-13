@@ -8,46 +8,24 @@ import { Icon, Style } from "ol/style";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 
-function getPinsLayer(coordSet) {
-    // Create vector source to hold pin features
-    var vectorSource = new VectorSource({
-        features: []
-    });
-
-    for (const coords of coordSet) {
-        // Create a pin (point feature) at given coordinates
-        var pin = new Feature({
-            geometry: new Point(fromLonLat(coords))
-        });
-        
-        // Style for the pin
-        pin.setStyle(new Style({
-            image: new Icon({
-                src: "https://cdn-icons-png.flaticon.com/512/9356/9356230.png",
-                // src: "https://openlayers.org/en/v4.6.5/examples/data/icon.png", // Pin icon image URL
-                scale: 0.07
-            })
-        }));
-        
-        vectorSource.addFeature(pin);
-    }
-
-    // Create/return vector layer with the pins
-    return new VectorLayer({ source: vectorSource });
-}
-
 export function initMap() {
     var defaultView = new View({
         center: [0, 0],
         zoom: 2
     });
 
+    const pinsLayer = new VectorLayer({
+        source: new VectorSource({ features: [] })
+    });
+    pinsLayer.set("name", "pinsLayer");
+
     const map = new Map({
         target: "map",
         layers: [
             new TileLayer({
                 source: new OSM()
-            })
+            }),
+            pinsLayer
         ],
         view: defaultView
     });
@@ -55,7 +33,25 @@ export function initMap() {
     return map;
 }
 
+function addPin(pinsLayer, coords) {
+    // Create a pin (point feature) at given coordinates
+    var pin = new Feature({
+        geometry: new Point(fromLonLat(coords))
+    });
+
+    // Style for the pin
+    pin.setStyle(new Style({
+        image: new Icon({
+            src: "https://cdn-icons-png.flaticon.com/512/9356/9356230.png",
+            scale: 0.07
+        })
+    }));
+
+    pinsLayer.getSource().addFeature(pin);
+}
+
 export function addPins(map, coordSet) {
-    var pinsLayer = getPinsLayer(coordSet);
-    map.addLayer(pinsLayer);
+    // Get pins layer, add all coords
+    const pinsLayer = map.getLayers().getArray().find(layer => layer.get('name') === 'pinsLayer');
+    coordSet.forEach(coords => addPin(pinsLayer, coords));
 }
