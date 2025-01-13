@@ -9,6 +9,13 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import Overlay from "ol/Overlay";
 
+function getImgSrc(date) {
+    // Generate URL for image based on date
+    var [year, month, day] = date.split("-");
+    year = year.slice(2);
+    return `https://apod.nasa.gov/apod/ap${year}${month}${day}.html`;
+}
+
 export function initMap() {
     // Default view: whole world
     var defaultView = new View({
@@ -60,17 +67,18 @@ export function initMap() {
     map.on('singleclick', (event) => {
         map.forEachFeatureAtPixel(event.pixel, (feature) => {
             const pinDetails = feature.get('details');
-            if (pinDetails) {
-                console.log(pinDetails);
-                const imgUrl = pinDetails.thumb || pinDetails.url;
-                // Update popup
-                popupContent.innerHTML = `
+            const src = getImgSrc(pinDetails.date);
+            const imgUrl = pinDetails.thumb || pinDetails.url;
+
+            // Update popup
+            popupContent.innerHTML = `
+                <a href="${src}" target="_blank">
                     <img src="${imgUrl}" alt="Pin Image">
-                    <p>Credit: ${pinDetails.copyright}</p>
-                `;
-                popupOverlay.setPosition(feature.getGeometry().getCoordinates());
-                popupElement.style.display = 'block';
-            }
+                </a>
+                <p>Credit: ${pinDetails.copyright}</p>
+            `;
+            popupOverlay.setPosition(feature.getGeometry().getCoordinates());
+            popupElement.style.display = 'block';
         });
     });
 
