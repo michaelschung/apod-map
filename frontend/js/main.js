@@ -1,67 +1,71 @@
 import "../css/style.css";
 import { apodReq, openaiReq } from "./requests.js";
-import { initMap, addPins } from "./map.js";
+import { initMap, addPins, clearPins } from "./map.js";
 import flatpickr from "flatpickr";
+import monthSelectPlugin from "flatpickr/dist/plugins/monthSelect/index.js";
 
 // Number of images to process in each batch
 const BATCH_SIZE = 5;
 
-const firstOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-const today = new Date();
+const map = initMap();
 
-var startDate = firstOfMonth.toISOString().split("T")[0];
-var endDate = today.toISOString().split("T")[0];
-
-updateDisplayDates();
-
-function updateDisplayDates() {
-    document.getElementById("start-date").innerHTML = startDate;
-    document.getElementById("end-date").innerHTML = endDate;
-}
-
-const datePicker = flatpickr("#date-picker", {
-    altInput: true,
-    altFormat: "F Y",
+const monthPickerElement = document.getElementById("month-picker");
+const monthPicker = flatpickr(monthPickerElement, {
+    plugins: [new monthSelectPlugin({ })],
+    defaultDate: "today",
     dateFormat: "Y-m-d",
-    minDate: "1995-06-16",
-    maxDate: today,
-    disable: ["1995-06-17", "1995-06-18", "1995-06-19"],
-    mode: "range",
-    defaultDate: [firstOfMonth, today],
-    inline: true,
-    onMonthChange: selectFullMonth,
+    altFormat: "F Y",
+    minDate: "1995-06-01",
+    maxDate: "today",
+    onChange: requestMonth,
 });
 
-function selectFullMonth() {
-    const year = datePicker.currentYear;
-    const month = datePicker.currentMonth;
+function requestMonth() {
+    clearPins(map);
 
+    const today = new Date();
+
+    const year = monthPicker.currentYear;
+    const month = monthPicker.currentMonth;
+
+    // Start on first of month, limited by 1995-06-16
     const firstOfMonth = new Date(year, month, 1);
-    // If viewing current month, last of month is today
-    const isThisMonth = year === today.getFullYear() && month === today.getMonth();
+    const selectionStart = new Date(Math.max(firstOfMonth, new Date("1995-06-16")));
+    // End on last of month, unless current month (then end on today)
     const lastOfMonth = new Date(year, month+1, 1);
     lastOfMonth.setDate(lastOfMonth.getDate() - 1);
-    const lastOfSelection = isThisMonth ? today : lastOfMonth;
-    datePicker.setDate([firstOfMonth, lastOfSelection]);
-    startDate = firstOfMonth.toISOString().split("T")[0];
-    endDate = lastOfMonth.toISOString().split("T")[0];
-    updateDisplayDates();
-}
+    const selectionEnd = new Date(Math.min(lastOfMonth, today));
 
-const map = initMap();
+    // Format date range to request
+    const startDate = selectionStart.toISOString().split("T")[0];
+    const endDate = selectionEnd.toISOString().split("T")[0];
+
+    console.log("Requesting month: ", startDate, endDate);
+
+    monthPickerElement.disabled = true;
+
+    apodReq(startDate, endDate).then((raw_apod_data) => {
+        console.log(raw_apod_data);
+        // Reverse the data so that the newest posts are processed first
+        batch_requests(raw_apod_data.reverse(), BATCH_SIZE);
+    });
+}
 
 // Make requests in batches for faster page population
 function batch_requests(data, batchSize) {
+    const nBatches = Math.ceil(data.length / batchSize);
+    var finished = 0;
     for (let i = 0; i < data.length; i += batchSize) {
         const batch = data.slice(i, i + batchSize);
-        openaiReq(batch).then((data) => {
-            addPins(map, data);
+        openaiReq(batch).then((parsed_data) => {
+            addPins(map, parsed_data);
+            finished++;
+            if (finished >= nBatches) {
+                console.log("All data processed");
+                monthPickerElement.disabled = false;
+            }
         });
     }
 }
 
-apodReq(startDate, endDate).then((raw_apod_data) => {
-    console.log(raw_apod_data);
-    // Reverse the data so that the newest posts are processed first
-    // batch_requests(raw_apod_data.reverse(), BATCH_SIZE);
-});
+requestMonth();

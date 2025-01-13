@@ -120,3 +120,7 @@ export function addPins(map, data) {
         }
     }
 }
+
+export function clearPins(map) {
+    map.getLayers().getArray().find(layer => layer.get("name") === "pinsLayer").getSource().clear();
+}

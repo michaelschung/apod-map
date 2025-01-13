@@ -8,14 +8,17 @@
 
     <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Month Select Plugin CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
 </head>
 <body>
     <h2>APOD Map</h2>
     <p>
         This map shows the locations of NASA's <a href="https://apod.nasa.gov/apod/astropix.html">Astronomy Picture of the Day</a> (APOD) images. 
-        Currently viewing: <span id="start-date"></span> to <span id="end-date"></span>.
+        <!-- Currently viewing: <span id="start-date"></span> to <span id="end-date"></span>. -->
+        Currently viewing: <input type="text" id="month-picker" placeholder="Select a month">
     </p>
-    <input type="text" id="date-picker" placeholder="Select a month">
+    <!-- <input type="text" id="month-picker" placeholder="Select a month"> -->
     <div id="map"></div>
 
     <!-- Pop-up container -->
