@@ -65,6 +65,12 @@ export function initMap() {
     };
 
     map.on('singleclick', (event) => {
+        // If no feature is found, close the popup
+        if (!map.hasFeatureAtPixel(event.pixel)) {
+            dismissButton.click();
+            return;
+        }
+
         map.forEachFeatureAtPixel(event.pixel, (feature) => {
             const pinDetails = feature.get('details');
             const src = getImgSrc(pinDetails.date);
