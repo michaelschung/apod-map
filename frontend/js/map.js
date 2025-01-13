@@ -7,6 +7,7 @@ import Point from "ol/geom/Point";
 import { Icon, Style } from "ol/style";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
+import Overlay from "ol/Overlay";
 
 export function initMap() {
     // Default view: whole world
@@ -33,11 +34,42 @@ export function initMap() {
         view: defaultView
     });
 
+    // Create popup overlay
+    const popupElement = document.getElementById('popup');
+    const popupContent = popupElement.querySelector('.popup-content');
+    const dismissButton = popupElement.querySelector('.popup-dismiss');
+
+    const popupOverlay = new Overlay({
+        element: popupElement,
+        autoPan: {
+            animation: {
+                duration: 250,
+            },
+        },
+    });
+
+    map.addOverlay(popupOverlay);
+
+    // Close the pop-up when the closer is clicked
+    dismissButton.onclick = () => {
+        popupOverlay.setPosition(undefined);
+        popupElement.style.display = 'none';
+        return false;
+    };
+
     map.on('singleclick', (event) => {
         map.forEachFeatureAtPixel(event.pixel, (feature) => {
             const pinDetails = feature.get('details');
             if (pinDetails) {
                 console.log(pinDetails);
+                const imgUrl = pinDetails.thumb || pinDetails.url;
+                // Update popup
+                popupContent.innerHTML = `
+                    <img src="${imgUrl}" alt="Pin Image">
+                    <p>Credit: ${pinDetails.copyright}</p>
+                `;
+                popupOverlay.setPosition(feature.getGeometry().getCoordinates());
+                popupElement.style.display = 'block';
             }
         });
     });
