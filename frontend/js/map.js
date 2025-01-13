@@ -42,12 +42,12 @@ export function initMap() {
     });
 
     // Create popup overlay
-    const popupElement = document.getElementById('popup');
-    const popupContent = popupElement.querySelector('.popup-content');
-    const dismissButton = popupElement.querySelector('.popup-dismiss');
+    const popup = document.getElementById("popup");
+    const popupContent = popup.querySelector(".popup-content");
+    const dismissButton = popup.querySelector(".popup-dismiss");
 
     const popupOverlay = new Overlay({
-        element: popupElement,
+        element: popup,
         autoPan: {
             animation: {
                 duration: 250,
@@ -60,11 +60,11 @@ export function initMap() {
     // Close the pop-up when the closer is clicked
     dismissButton.onclick = () => {
         popupOverlay.setPosition(undefined);
-        popupElement.style.display = 'none';
+        popup.style.display = "none";
         return false;
     };
 
-    map.on('singleclick', (event) => {
+    map.on("singleclick", (event) => {
         // If no feature is found, close the popup
         if (!map.hasFeatureAtPixel(event.pixel)) {
             dismissButton.click();
@@ -72,7 +72,7 @@ export function initMap() {
         }
 
         map.forEachFeatureAtPixel(event.pixel, (feature) => {
-            const pinDetails = feature.get('details');
+            const pinDetails = feature.get("details");
             const src = getImgSrc(pinDetails.date);
             const imgUrl = pinDetails.thumb || pinDetails.url;
 
@@ -85,7 +85,7 @@ export function initMap() {
                 <p>Credit: ${pinDetails.copyright}</p>
             `;
             popupOverlay.setPosition(feature.getGeometry().getCoordinates());
-            popupElement.style.display = 'block';
+            popup.style.display = "block";
         });
     });
 
@@ -113,7 +113,7 @@ function addPin(pinsLayer, obj) {
 
 export function addPins(map, data) {
     // Get pins layer, add all coords
-    const pinsLayer = map.getLayers().getArray().find(layer => layer.get('name') === 'pinsLayer');
+    const pinsLayer = map.getLayers().getArray().find(layer => layer.get("name") === "pinsLayer");
     for (const obj of data) {
         if (obj.coords) {
             addPin(pinsLayer, obj);
