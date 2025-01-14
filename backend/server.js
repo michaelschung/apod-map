@@ -3,6 +3,7 @@ const cors = require("cors");
 const OpenAI = require("openai");
 const dotenv = require("dotenv")
 const path = require("path");
+const mongoose = require("mongoose");
 
 dotenv.config()
 
@@ -23,11 +24,22 @@ app.use(express.json());
 // OpenAI configuration
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
+// Mongo configuration
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log('Connected to MongoDB Atlas'))
+  .catch((err) => console.error('Error connecting to MongoDB:', err));
+
 // ===== API routes =====
 const openaiRoutes = require("./routes/openai");
 const apodRoutes = require("./routes/apod");
+const mongoRoutes = require("./routes/mongo");
 app.use("/api/openai", openaiRoutes(openai));
 app.use("/api/apod", apodRoutes(NASA_API_KEY));
+app.use("/api/mongo", mongoRoutes(mongoose));
 
 // Start the server
 app.listen(PORT, () => {

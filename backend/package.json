@@ -14,8 +14,9 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
-    "openai": "^4.76.1",
-    "ol": "^10.3.1"
+    "mongoose": "^8.9.5",
+    "ol": "^10.3.1",
+    "openai": "^4.76.1"
   },
   "engines": {
     "node": ">=23.3.0"
