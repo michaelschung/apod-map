@@ -36,8 +36,8 @@ $ npm run install:all
 ```
 
 From here, you can either:
-1. Run in development mode: Serve the frontend and backend separately for easier development and hot-reloading.
-2. Run in production mode: Build the frontend files and serve them via the backend for a single-port production deployment.
+1. [Run in development mode](#run-in-development-mode): Serve the frontend and backend separately for easier development and hot-reloading.
+2. [Run in production mode](#run-in-production-mode): Build the frontend files and serve them via the backend for a single-port production deployment.
 
 ### Run in development mode
 
