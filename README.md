@@ -14,7 +14,7 @@ Technical overview:
 
 ## View the map!
 
-This app is publicly hosted as a [Render app](https://apod-map.onrender.com/) -- feel free to check it out!
+This app is publicly hosted as a [Render](https://render.com/) app -- feel free to [check it out here](https://apod-map.onrender.com/)!
 
 Please note:
 - This app spins down with inactivity, so it may take a while to boot up if no one's accessed it for a while.
