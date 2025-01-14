@@ -7,7 +7,8 @@ html, body {
 }
 
 .popup-content img {
-    max-width: 100%;
+    max-width: 20vw;
+    max-height: 20vh;
     height: auto;
 }
 
@@ -33,8 +34,7 @@ html, body {
     z-index: 1000;
     /* Position the pop-up above the pin */
     transform: translate(-50%, -100%);
-    white-space: nowrap;
-    /* object-fit */
+    /* white-space: nowrap; */
 }
 
 #map {
