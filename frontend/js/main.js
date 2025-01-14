@@ -21,6 +21,7 @@ const monthPicker = flatpickr(monthPickerElement, {
 });
 
 function requestMonth() {
+    document.getElementById("popup").querySelector(".popup-dismiss").click();
     clearPins(map);
 
     const today = new Date();
