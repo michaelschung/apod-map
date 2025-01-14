@@ -34,7 +34,6 @@ html, body {
     z-index: 1000;
     /* Position the pop-up above the pin */
     transform: translate(-50%, -100%);
-    /* white-space: nowrap; */
 }
 
 #map {

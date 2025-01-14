@@ -1,9 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const OpenAI = require("openai");
-var session = require("express-session");
-
 const dotenv = require("dotenv")
+const path = require("path");
+
 dotenv.config()
 
 const app = express();
@@ -14,18 +14,11 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const NASA_API_KEY = process.env.NASA_API_KEY;
 const PORT = process.env.PORT || defaultPort;
 
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-// Session setup
-app.use(
-    session({
-        secret: "something-secret",
-        resave: false,
-        saveUninitialized: true,
-    })
-);
 
 // OpenAI configuration
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
