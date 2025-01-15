@@ -29,11 +29,10 @@ function requestMonth() {
     const year = monthPicker.currentYear;
     const month = monthPicker.currentMonth;
 
-    getFromDB(year, month).then((response) => {
+    getFromDB(year, month).then((data) => {
         // If month is cached, add all pins at the same time
-        if (response.ok) {
-            console.log("CACHED");
-            addPins(map, response.json().data);
+        if (data) {
+            addPins(map, data);
             return;
         }
 

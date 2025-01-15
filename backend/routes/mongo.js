@@ -8,23 +8,21 @@ module.exports = (mongo) => {
         try {
             const {year, month} = req.body;
 
+            const yearKey = year.toString();
+            const monthKey = month.toString();
+
             // Get existing data document
             let existingData = await YearlyData.findOne();
 
             // Check if data exists
             if (existingData) {
-                console.log("Data exists");
                 // Data exists; check if year exists
-                if (existingData.yearlyData.has(year)) {
-                    console.log("Year exists");
+                if (existingData.yearlyData.has(yearKey)) {
                     // Year exists; check if month exists
-                    const yearData = existingData.yearlyData.get(year);
+                    const yearData = existingData.yearlyData.get(yearKey);
                     console.log(yearData);
-                    if (yearData[month]) {
-                        res.status(200).json({
-                            message: "Retrieved cached data",
-                            data: yearData[month]
-                        });
+                    if (yearData.get(monthKey)) {
+                        res.status(200).json(yearData.get(monthKey));
                         return;
                     }
                 }
@@ -39,6 +37,9 @@ module.exports = (mongo) => {
     router.post("/add-month", async (req, res) => {
         try {
             const { year, month, data } = req.body;
+
+            const yearKey = year.toString();
+            const monthKey = month.toString();
             
             // Get existing data document
             let existingData = await YearlyData.findOne();
@@ -46,14 +47,14 @@ module.exports = (mongo) => {
             // Check if data exists
             if (existingData) {
                 // Data exists; check if year already exists
-                if (existingData.yearlyData.has(year)) {
+                if (existingData.yearlyData.has(yearKey)) {
                     // Year exists; set month
-                    const yearData = existingData.yearlyData.get(year);
-                    yearData[month] = data;
+                    const yearData = existingData.yearlyData.get(yearKey);
+                    yearData[monthKey] = data;
                 } else {
                     // Year doesn't exist; create year and add month
-                    existingData.yearlyData.set(year, {
-                        [month]: data
+                    existingData.yearlyData.set(yearKey, {
+                        [monthKey]: data
                     });
                 }
                 await existingData.save();
@@ -62,8 +63,8 @@ module.exports = (mongo) => {
                 // No data exists; create a new document with given data
                 const newData = new YearlyData({
                     yearlyData: {
-                        [year]: {
-                            [month]: data,
+                        [yearKey]: {
+                            [monthKey]: data,
                         },
                     },
                 });

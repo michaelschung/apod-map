@@ -9,8 +9,14 @@ export async function getFromDB(year, month) {
             "month": month
         })
     })
-        .then((response) => response)
-        // .then((data) => data)
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+            return null;
+        })
+        // .then((response) => response.json())
+        .then((data) => data)
         .catch((error) => console.error(error));
 }
 
