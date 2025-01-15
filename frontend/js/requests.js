@@ -1,3 +1,42 @@
+export async function getFromDB(year, month) {
+    return await fetch("/api/mongo/get-month", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            "year": year,
+            "month": month
+        })
+    })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            }
+            return null;
+        })
+        // .then((response) => response.json())
+        .then((data) => data)
+        .catch((error) => console.error(error));
+}
+
+export async function writeToDB(year, month, data) {
+    return fetch("/api/mongo/add-month", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            "year": year,
+            "month": month,
+            "data": data
+        })
+    })
+        .then((response) => response.json())
+        .then((data) => data)
+        .catch((error) => console.error(error));
+}
+
 // Fetches OpenAI completion from backend, using provided prompt
 async function openaiReqWithPrompt(sysPrompt, apodData) {
     return await fetch("/api/openai/completion", {
