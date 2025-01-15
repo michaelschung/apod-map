@@ -22,11 +22,21 @@ Please note:
 
 ## Running locally
 
+*Please note: Running APOD Map locally requires that you provide 1) your own OpenAI API key, 2) your own NASA API key, and 3) your own Mongo Atlas connection string.*
+
 Clone this repo and enter the home folder.
 
 ```bash
 $ git clone git@github.com:michaelschung/apod-map.git apod-map
 $ cd apod-map
+```
+
+This project relies on three environment variables. Create a file `backend/.env` and provide the following three variables:
+
+```dotenv
+OPENAI_API_KEY="sk-EXAMPLE"
+NASA_API_KEY="EXAMPLE"
+MONGO_URI="mongodb+srv://EXAMPLE"
 ```
 
 Run the provided `install:all` script to install dependencies for the entire project.
