@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/michaelschung/apod-map/actions/workflows/ci.yml/badge.svg)](https://github.com/michaelschung/apod-map/actions/workflows/ci.yml) ![Node.js Version](https://img.shields.io/badge/Node.js-%3E%3D23.3.0-brightgreen) ![License](https://img.shields.io/badge/license-GPL%20v3-blue)
+![Build Status](https://github.com/michaelschung/apod-map/actions/workflows/ci.yml) ![Node.js Version](https://img.shields.io/badge/Node.js-%3E%3D23.3.0-brightgreen) ![License](https://img.shields.io/badge/license-GPL%20v3-blue)
 
 # APOD Map
 
