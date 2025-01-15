@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const YearlyData = require("../models/YearlyData");
 
 module.exports = (mongo) => {
@@ -59,7 +59,7 @@ module.exports = (mongo) => {
                 }
                 existingData.markModified("yearlyData");
                 await existingData.save();
-                res.status(200).json({ message: 'Data updated successfully' });
+                res.status(200).json({ message: "Data updated successfully" });
             } else {
                 // No data exists; create a new document with given data
                 const newData = new YearlyData({
@@ -70,7 +70,7 @@ module.exports = (mongo) => {
                     },
                 });
                 await newData.save();
-                res.status(201).json({ message: 'Data created successfully' });
+                res.status(201).json({ message: "Data created successfully" });
             }
         } catch (error) {
             console.error("Error:", error);

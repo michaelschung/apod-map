@@ -11,6 +11,6 @@ const yearlyDataSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-const YearlyData = mongoose.model('YearlyData', yearlyDataSchema);
+const YearlyData = mongoose.model("YearlyData", yearlyDataSchema);
 
 module.exports = YearlyData;
