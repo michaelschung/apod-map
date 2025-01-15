@@ -19,7 +19,7 @@ function getImgSrc(date) {
 export function initMap() {
     // Default view: whole world
     var defaultView = new View({
-        center: [0, 0],
+        center: fromLonLat([0, 20]),
         zoom: 2
     });
 
