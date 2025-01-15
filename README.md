@@ -6,7 +6,15 @@ NASA's [Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html) 
 
 The photos posted to APOD are a mix of official NASA images from across its myriad historical and current missions, as well as many incredible photos taken by individuals in the wider astrophotography community. This web app seeks to appreciate the global scale of the APOD archive by visualizing its contributors on a map.
 
-Technical overview:
+## Table of Contents
+
+- [Technical overview](#technical-overview)
+- [View the map!](#view-the-map)
+- [Running locally](#running-locally)
+- [License](#license)
+
+## Technical overview:
+
 - This app displays a calendar month of pins at a time, with a default of the current month.
 - The month range is fed into NASA's [APOD API](https://api.nasa.gov/), which returns a JSON blob of APOD data.
 - The JSON blob is then fed through the [OpenAI API](https://platform.openai.com/docs/overview), which does its best to extract location data.
@@ -77,3 +85,7 @@ This executes `vite build` in `frontend/`, which generates static files and stor
 Finally, run the `start` script to spin up the backend server on port 3000, which is already configured to serve the static files from `frontend/dist/`.
 
 View the webpage by visiting [`localhost:3000`](http://localhost:3000/).
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](https://github.com/michaelschung/apod-map/blob/main/LICENSE) file for details.
