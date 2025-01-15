@@ -11,6 +11,7 @@ Technical overview:
 - The month range is fed into NASA's [APOD API](https://api.nasa.gov/), which returns a JSON blob of APOD data.
 - The JSON blob is then fed through the [OpenAI API](https://platform.openai.com/docs/overview), which does its best to extract location data.
 - Finally, the location data is plotted onto the map as clickable pins.
+- (Additionally, each month of processed data is stored in a Mongo Atlas database. Previously-processed months are fetched directly from the database to save on API calls.)
 
 ## View the map!
 
