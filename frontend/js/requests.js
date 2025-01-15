@@ -1,3 +1,19 @@
+export async function getFromDB(year, month) {
+    return await fetch("/api/mongo/get-month", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            "year": year,
+            "month": month
+        })
+    })
+        .then((response) => response)
+        // .then((data) => data)
+        .catch((error) => console.error(error));
+}
+
 export async function writeToDB(year, month, data) {
     return fetch("/api/mongo/add-month", {
         method: "POST",
