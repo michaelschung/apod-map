@@ -32,7 +32,6 @@ function requestMonth() {
     getFromDB(year, month).then((data) => {
         // If month is cached
         if (data) {
-            console.log("CACHED");
             // If current month, make sure db data is up to date
             if (month !== today.getMonth() || data.length >= today.getDate()) {
                 addPins(map, data);
@@ -52,12 +51,10 @@ function requestMonth() {
         const startDate = selectionStart.toISOString().split("T")[0];
         const endDate = selectionEnd.toISOString().split("T")[0];
 
-        console.log("Requesting month from APOD: ", startDate, endDate);
-
         monthPickerElement.disabled = true;
 
         apodReq(startDate, endDate).then((raw_apod_data) => {
-            console.log(raw_apod_data);
+            console.log("Sending APOD data through OpenAI");
             // Reverse the data so that the newest posts are processed first
             batch_requests(year, month, raw_apod_data.reverse(), BATCH_SIZE);
         });

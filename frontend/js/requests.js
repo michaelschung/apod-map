@@ -44,7 +44,7 @@ async function openaiReqWithPrompt(sysPrompt, apodData) {
         ]),
     })
         .then((response) => response.json())
-        .then((data) => JSON.parse(data))
+        .then((data) => data)
         .catch((error) => console.error(error));
 }
 
@@ -101,12 +101,25 @@ export async function openaiReq(apodData) {
                 of where that photographer is based.
             If all of the above fails, then leave out the "coords" attribute.
     `
-    return openaiReqWithPrompt(sysPrompt, JSON.stringify(apodData))
-        .then((data) => data);
+    var parsedData = null;
+    var validJSON = false;
+    while (!validJSON) {
+        try {
+            validJSON = true;
+            parsedData = await openaiReqWithPrompt(sysPrompt, JSON.stringify(apodData))
+                .then((data) => JSON.parse(data));
+        } catch (error) {
+            console.log("OpenAI returned invalid JSON. Trying again.");
+            validJSON = false;
+        }
+    }
+    return parsedData;
 }
 
 // Fetches APOD data from backend, optionally filtered by date range
 export async function apodReq(startDate=null, endDate=null) {
+    console.log("Requesting month from APOD: ", startDate, endDate);
+    
     const url = new URL("/api/apod", window.location.origin);
     if (startDate) url.searchParams.append("start_date", startDate);
     if (endDate) url.searchParams.append("end_date", endDate);
