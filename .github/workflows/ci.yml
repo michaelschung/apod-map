@@ -1,4 +1,4 @@
-name: APOD Map CI
+name: Build Status
 
 on:
   push:
