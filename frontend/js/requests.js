@@ -9,13 +9,7 @@ export async function getFromDB(year, month) {
             "month": month
         })
     })
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            }
-            return null;
-        })
-        // .then((response) => response.json())
+        .then((response) => response.ok ? response.json() : null)
         .then((data) => data)
         .catch((error) => console.error(error));
 }
@@ -33,7 +27,7 @@ export async function writeToDB(year, month, data) {
         })
     })
         .then((response) => response.json())
-        .then((data) => data)
+        .then((data) => console.log(data))
         .catch((error) => console.error(error));
 }
 

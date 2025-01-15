@@ -30,10 +30,14 @@ function requestMonth() {
     const month = monthPicker.currentMonth;
 
     getFromDB(year, month).then((data) => {
-        // If month is cached, add all pins at the same time
+        // If month is cached
         if (data) {
-            addPins(map, data);
-            return;
+            console.log("CACHED");
+            // If current month, make sure db data is up to date
+            if (month !== today.getMonth() || data.length >= today.getDate()) {
+                addPins(map, data);
+                return;
+            }
         }
 
         // Start on first of month, limited by 1995-06-16

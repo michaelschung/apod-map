@@ -20,7 +20,6 @@ module.exports = (mongo) => {
                 if (existingData.yearlyData.has(yearKey)) {
                     // Year exists; check if month exists
                     const yearData = existingData.yearlyData.get(yearKey);
-                    console.log(yearData);
                     if (yearData.get(monthKey)) {
                         res.status(200).json(yearData.get(monthKey));
                         return;
@@ -43,20 +42,27 @@ module.exports = (mongo) => {
             
             // Get existing data document
             let existingData = await YearlyData.findOne();
+
+            console.log(`WRITING ${year} ${month}`);
             
             // Check if data exists
             if (existingData) {
                 // Data exists; check if year already exists
                 if (existingData.yearlyData.has(yearKey)) {
+                    console.log("YEAR EXISTS");
                     // Year exists; set month
                     const yearData = existingData.yearlyData.get(yearKey);
-                    yearData[monthKey] = data;
+                    yearData.set(monthKey, data);
+                    existingData.yearlyData.set(yearKey, yearData);
                 } else {
+                    console.log("YEAR DOES NOT EXIST");
                     // Year doesn't exist; create year and add month
                     existingData.yearlyData.set(yearKey, {
                         [monthKey]: data
                     });
                 }
+                console.log(existingData);
+                existingData.markModified("yearlyData");
                 await existingData.save();
                 res.status(200).json({ message: 'Data updated successfully' });
             } else {
