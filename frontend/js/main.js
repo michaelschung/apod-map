@@ -1,6 +1,6 @@
 import "../css/style.css";
 import { apodReq, openaiReq, getFromDB, writeToDB } from "./requests.js";
-import { initMap, addPins, clearPins } from "./map.js";
+import { initMap, addPins, clearPins, closePopup } from "./map.js";
 import flatpickr from "flatpickr";
 import monthSelectPlugin from "flatpickr/dist/plugins/monthSelect/index.js";
 
@@ -21,7 +21,7 @@ const monthPicker = flatpickr(monthPickerElement, {
 });
 
 function requestMonth() {
-    document.getElementById("popup").querySelector(".popup-dismiss").click();
+    closePopup();
     clearPins(map);
 
     const today = new Date();
@@ -54,7 +54,6 @@ function requestMonth() {
         monthPickerElement.disabled = true;
 
         apodReq(startDate, endDate).then((raw_apod_data) => {
-            console.log("Sending APOD data through OpenAI");
             // Reverse the data so that the newest posts are processed first
             batch_requests(year, month, raw_apod_data.reverse(), BATCH_SIZE);
         });
@@ -72,8 +71,9 @@ function batch_requests(year, month, data, batchSize) {
             allParsedData.push(...parsedData);
             addPins(map, parsedData);
             finished++;
+            // Write processed data to db
             if (finished >= nBatches) {
-                console.log("All data processed");
+                console.log("Done loading month");
                 writeToDB(year, month, allParsedData);
                 monthPickerElement.disabled = false;
             }

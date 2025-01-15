@@ -67,7 +67,7 @@ export function initMap() {
     map.on("singleclick", (event) => {
         // If no feature is found, close the popup
         if (!map.hasFeatureAtPixel(event.pixel)) {
-            dismissButton.click();
+            closePopup();
             return;
         }
 
@@ -123,4 +123,8 @@ export function addPins(map, data) {
 
 export function clearPins(map) {
     map.getLayers().getArray().find(layer => layer.get("name") === "pinsLayer").getSource().clear();
+}
+
+export function closePopup() {
+    document.getElementById("popup").querySelector(".popup-dismiss").click();
 }
