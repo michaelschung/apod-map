@@ -13,6 +13,7 @@ const defaultPort = 3000;
 // Pick up environment variables
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const NASA_API_KEY = process.env.NASA_API_KEY;
+const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT || defaultPort;
 
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
@@ -26,10 +27,7 @@ const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
 // Mongo configuration
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(MONGO_URI)
   .then(() => console.log("Connected to MongoDB Atlas"))
   .catch((err) => console.error("Error connecting to MongoDB:", err));
 

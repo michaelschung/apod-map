@@ -23,13 +23,14 @@ const monthPicker = flatpickr(monthPickerElement, {
 });
 
 // Displays or hides loading modal
-function loading(mapLoading) {
+function loading(mapLoading, message="") {
     if (mapLoading) {
         const year = monthPicker.currentYear;
         const month = monthPicker.currentMonth;
         const monthStr = new Date(year, month, 1).toLocaleString("default", { month: "long" });
 
-        loadingModalElement.innerHTML = `Loading ${monthStr} ${year}...`
+        loadingModalElement.querySelector(".date").innerHTML = `Loading ${monthStr} ${year}`
+        loadingModalElement.querySelector(".status").innerHTML = `${message}...`;
         loadingModalElement.style.display = "grid";
         monthPickerElement.disabled = true;
     } else {
@@ -70,8 +71,8 @@ function requestMonth() {
         const startDate = selectionStart.toISOString().split("T")[0];
         const endDate = selectionEnd.toISOString().split("T")[0];
 
-        // Open loading modal
-        loading(true);
+        // Open/update loading modal
+        loading(true, "Requesting data from NASA");
 
         // Request month of data from APOD API
         apodReq(startDate, endDate).then((raw_apod_data) => {
@@ -83,6 +84,7 @@ function requestMonth() {
 
 // Make requests in batches for faster page population
 function batch_requests(year, month, data, batchSize) {
+    loading(true, "Extracting location data");
     const nBatches = Math.ceil(data.length / batchSize);
     var allParsedData = [];
     var finished = 0;
