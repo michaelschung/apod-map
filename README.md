@@ -1,4 +1,4 @@
-![License](https://img.shields.io/badge/license-GPL%20v3-blue) ![Node.js](https://img.shields.io/node/v/michaelschung/apod-map)
+![Node.js Version](https://img.shields.io/badge/Node.js-%3E%3D%2023.3.0-brightgreen) ![License](https://img.shields.io/badge/license-GPL%20v3-blue)
 
 # APOD Map
 
