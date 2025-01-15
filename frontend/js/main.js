@@ -9,7 +9,9 @@ const BATCH_SIZE = 5;
 
 const map = initMap();
 
+const loadingModalElement = document.getElementById("loading-modal");
 const monthPickerElement = document.getElementById("month-picker");
+
 const monthPicker = flatpickr(monthPickerElement, {
     plugins: [new monthSelectPlugin({ })],
     defaultDate: "today",
@@ -20,17 +22,34 @@ const monthPicker = flatpickr(monthPickerElement, {
     onChange: requestMonth,
 });
 
+// Displays or hides loading modal
+function loading(mapLoading) {
+    if (mapLoading) {
+        const year = monthPicker.currentYear;
+        const month = monthPicker.currentMonth;
+        const monthStr = new Date(year, month, 1).toLocaleString("default", { month: "long" });
+
+        loadingModalElement.innerHTML = `Loading ${monthStr} ${year}...`
+        loadingModalElement.style.display = "grid";
+        monthPickerElement.disabled = true;
+    } else {
+        loadingModalElement.style.display = "none";
+        monthPickerElement.disabled = false;
+    }
+}
+
+// Retrieves data for current selected month
 function requestMonth() {
     closePopup();
     clearPins(map);
 
     const today = new Date();
-
     const year = monthPicker.currentYear;
     const month = monthPicker.currentMonth;
 
+    // Check database first
     getFromDB(year, month).then((data) => {
-        // If month is cached
+        // If month is cached and current, use that data
         if (data) {
             // If current month, make sure db data is up to date
             if (month !== today.getMonth() || data.length >= today.getDate()) {
@@ -51,8 +70,10 @@ function requestMonth() {
         const startDate = selectionStart.toISOString().split("T")[0];
         const endDate = selectionEnd.toISOString().split("T")[0];
 
-        monthPickerElement.disabled = true;
+        // Open loading modal
+        loading(true);
 
+        // Request month of data from APOD API
         apodReq(startDate, endDate).then((raw_apod_data) => {
             // Reverse the data so that the newest posts are processed first
             batch_requests(year, month, raw_apod_data.reverse(), BATCH_SIZE);
@@ -67,6 +88,7 @@ function batch_requests(year, month, data, batchSize) {
     var finished = 0;
     for (let i = 0; i < data.length; i += batchSize) {
         const batch = data.slice(i, i + batchSize);
+        // Send each batch to OpenAI API for processing
         openaiReq(batch).then((parsedData) => {
             allParsedData.push(...parsedData);
             addPins(map, parsedData);
@@ -75,7 +97,8 @@ function batch_requests(year, month, data, batchSize) {
             if (finished >= nBatches) {
                 console.log("Done loading month");
                 writeToDB(year, month, allParsedData);
-                monthPickerElement.disabled = false;
+                // Close loading modal
+                loading(false);
             }
         });
     }
