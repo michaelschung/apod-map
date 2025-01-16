@@ -35,7 +35,7 @@ Please note:
 
 ## Running locally
 
-*Please note: Running APOD Map locally requires that you provide 1) your own OpenAI API key, 2) your own NASA API key, and 3) your own Mongo Atlas connection string.*
+*Please note: Running APOD Map locally requires that you provide 1) your own OpenAI API key, 2) your own NASA API key, and 3) your own MongoDB Atlas connection string.*
 
 Clone this repo and enter the home folder.
 
