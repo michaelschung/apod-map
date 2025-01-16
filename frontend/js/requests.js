@@ -72,7 +72,7 @@ export async function openaiReq(apodData) {
         The "location" is a little tricky. Here's how to break that down.
             1. If the object has no "copyright" attribute, then this is an
             official NASA image, taken from space. Please list the location
-            simply as "Space", and ignore "copyright" in the output.
+            simply as "Space", and list the output's "copyright" as "NASA".
             2. If there is a "copyright" attribute, then this photo was NOT
             taken from space. Here's what to check next:
                 2a. If the "explanation" blurb mentions where the photo was

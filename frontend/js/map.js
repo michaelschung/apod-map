@@ -16,6 +16,16 @@ function getImgSrc(date) {
     return `https://apod.nasa.gov/apod/ap${year}${month}${day}.html`;
 }
 
+function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    const options = {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    };
+    return date.toLocaleDateString("en-US", options);
+}
+
 export function initMap() {
     // Default view: whole world
     var defaultView = new View({
@@ -75,14 +85,15 @@ export function initMap() {
             const pinDetails = feature.get("details");
             const src = getImgSrc(pinDetails.date);
             const imgUrl = pinDetails.thumb || pinDetails.url;
+            const copyright = pinDetails.copyright || "Unknown";
 
             // Update popup
             popupContent.innerHTML = `
                 <a href="${src}" target="_blank">
                     <img src="${imgUrl}" alt="Pin Image">
                 </a>
-                <p>Date: ${pinDetails.date}</p>
-                <p>Credit: ${pinDetails.copyright}</p>
+                <p><b>${formatDate(pinDetails.date)}</b></p>
+                <p>Credit: ${copyright}</p>
             `;
             popupOverlay.setPosition(feature.getGeometry().getCoordinates());
             popup.style.display = "block";
