@@ -10,12 +10,20 @@ The photos posted to APOD are a mix of official NASA images from across its myri
 
 ## Table of Contents
 
-- [Technical overview](#technical-overview)
 - [View the map!](#view-the-map)
+- [Technical overview](#technical-overview)
 - [Running locally](#running-locally)
 - [Updates](#updates)
 - [Disclaimer](#disclaimer)
 - [License](#license)
+
+## [View the map!](https://apod-map.onrender.com/)
+
+This app is publicly hosted as a [Render](https://render.com/) app -- click above to check it out!
+
+Please note:
+- This app spins down with inactivity, so it may take a while to boot up if no one's accessed it for a while.
+- The app relies on the [OpenAI API](https://platform.openai.com/docs/overview) to extract location data. By default, this is using my personal API key, so apologies if that runs out of credits.
 
 ## Technical overview:
 
@@ -24,14 +32,6 @@ The photos posted to APOD are a mix of official NASA images from across its myri
 - The JSON blob is then fed through the [OpenAI API](https://platform.openai.com/docs/overview), which does its best to extract location data.
 - Finally, the location data is plotted onto the map as clickable pins.
 - (Additionally, each month of processed data is stored via [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database). Previously-processed months are fetched directly from the database to save on API calls.)
-
-## View the map!
-
-This app is publicly hosted as a [Render](https://render.com/) app -- feel free to [check it out here](https://apod-map.onrender.com/)!
-
-Please note:
-- This app spins down with inactivity, so it may take a while to boot up if no one's accessed it for a while.
-- The app relies on the [OpenAI API](https://platform.openai.com/docs/overview) to extract location data. By default, this is using my personal API key, so apologies if that runs out of credits.
 
 ## Running locally
 
