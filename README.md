@@ -14,15 +14,16 @@ The photos posted to APOD are a mix of official NASA images from across its myri
 - [View the map!](#view-the-map)
 - [Running locally](#running-locally)
 - [Updates](#updates)
+- [Disclaimer](#disclaimer)
 - [License](#license)
 
 ## Technical overview:
 
-- This app displays a calendar month of pins at a time, with a default of the current month.
+- The map displays a calendar month of pins at a time, with a default of the current month.
 - The month range is fed into NASA's [APOD API](https://api.nasa.gov/), which returns a JSON blob of APOD data.
 - The JSON blob is then fed through the [OpenAI API](https://platform.openai.com/docs/overview), which does its best to extract location data.
 - Finally, the location data is plotted onto the map as clickable pins.
-- (Additionally, each month of processed data is stored in a Mongo Atlas database. Previously-processed months are fetched directly from the database to save on API calls.)
+- (Additionally, each month of processed data is stored via [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database). Previously-processed months are fetched directly from the database to save on API calls.)
 
 ## View the map!
 
@@ -101,6 +102,10 @@ A few things that I would eventually like to add:
 - A list view of the pins, organized by date, appearing as a floating window on the left side of the map (think Google Maps). This would also allow me to include links to the photos that didn't make it through the location-extraction process.
 - Personal API key input via a pop-up modal. This isn't super urgent since DB caching enforces a strict upper bound on how many times the website will need to make API calls, but it could be nice in concept.
 - Web search for improved location extraction. The entire AI side of this works better in ChatGPT than through the OpenAI API, since ChatGPT is able to browse the Internet. But I think I'd have to pay for [Google Search API](https://developers.google.com/custom-search/v1/overview) access to support the requests that I'd want to make.
+
+## Disclaimer
+
+This web app uses images from the NASA Astronomy Picture of the Day (APOD) archive. All rights to the images are retained by their respective owners, as specified on the APOD website and in the metadata provided by the APOD API. Please refer to the [APOD About page](https://apod.nasa.gov/apod/lib/about_apod.html) for further details about usage and licensing.
 
 ## License
 
