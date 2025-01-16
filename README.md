@@ -22,10 +22,10 @@ The photos posted to APOD are a mix of official NASA images from across its myri
 This app is publicly hosted as a [Render](https://render.com/) app -- click above to check it out!
 
 Please note:
-- This app spins down with inactivity, so it may take a while to boot up if no one's accessed it for a while.
+- Free Render apps spin down with inactivity, so it may take a couple minutes to boot up if no one's accessed it for a while.
 - The app relies on the [OpenAI API](https://platform.openai.com/docs/overview) to extract location data. By default, this is using my personal API key, so apologies if that runs out of credits.
 
-## Technical overview:
+## Technical overview
 
 - The map displays a calendar month of pins at a time, with a default of the current month.
 - The month range is fed into NASA's [APOD API](https://api.nasa.gov/), which returns a JSON blob of APOD data.
