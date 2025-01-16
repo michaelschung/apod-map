@@ -13,6 +13,7 @@ The photos posted to APOD are a mix of official NASA images from across its myri
 - [Technical overview](#technical-overview)
 - [View the map!](#view-the-map)
 - [Running locally](#running-locally)
+- [Updates](#updates)
 - [License](#license)
 
 ## Technical overview:
@@ -29,7 +30,7 @@ This app is publicly hosted as a [Render](https://render.com/) app -- feel free 
 
 Please note:
 - This app spins down with inactivity, so it may take a while to boot up if no one's accessed it for a while.
-- The app relies on the [OpenAI API](https://platform.openai.com/docs/overview) to extract location data. By default, this is using my personal API key, so apologies if that runs out of credits. In the future I may add an option to enter your own API key.
+- The app relies on the [OpenAI API](https://platform.openai.com/docs/overview) to extract location data. By default, this is using my personal API key, so apologies if that runs out of credits.
 
 ## Running locally
 
@@ -87,6 +88,19 @@ This executes `vite build` in `frontend/`, which generates static files and stor
 Finally, run the `start` script to spin up the backend server on port 3000, which is already configured to serve the static files from `frontend/dist/`.
 
 View the webpage by visiting [`localhost:3000`](http://localhost:3000/).
+
+## Updates
+
+### Releases
+
+- **1.0.0**: Initial release (1/16/2025)
+
+### Roadmap
+
+A few things that I would eventually like to add:
+- A list view of the pins, organized by date, appearing as a floating window on the left side of the map (think Google Maps). This would also allow me to include links to the photos that didn't make it through the location-extraction process.
+- Personal API key input via a pop-up modal. This isn't super urgent since DB caching enforces a strict upper bound on how many times the website will need to make API calls, but it could be nice in concept.
+- Web search for improved location extraction. The entire AI side of this works better in ChatGPT than through the OpenAI API, since ChatGPT is able to browse the Internet. But I think I'd have to pay for [Google Search API](https://developers.google.com/custom-search/v1/overview) access to support the requests that I'd want to make.
 
 ## License
 
