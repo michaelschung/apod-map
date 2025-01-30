@@ -92,7 +92,7 @@ View the webpage by visiting [`localhost:3000`](http://localhost:3000/).
 
 ### Releases
 
-- **1.0.0**: Initial release (1/16/2025)
+- **1.0**: Initial release (1/16/2025)
 
 ### Roadmap
 
