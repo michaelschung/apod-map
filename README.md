@@ -21,19 +21,19 @@ The photos posted to APOD are a mix of official NASA images from across its myri
 
 This app is publicly hosted as a [Render](https://render.com/) app -- click above to check it out!
 
-Note: the app relies on the [OpenAI API](https://platform.openai.com/docs/overview) to extract location data. By default, this is using my personal API key, so apologies if that runs out of credits.
+Note: the app relies on the [Anthropic](https://docs.anthropic.com/en/home) and/or [OpenAI](https://platform.openai.com/docs/overview) APIs to extract location data. By default, this public site is using my personal OpenAI API key, so apologies if that runs out of credits.
 
 ## Technical overview
 
 - The map displays a calendar month of pins at a time, with a default of the current month.
 - The month range is fed into NASA's [APOD API](https://api.nasa.gov/), which returns a JSON blob of APOD data.
-- The JSON blob is then fed through the [OpenAI API](https://platform.openai.com/docs/overview), which does its best to extract location data.
+- The JSON blob is then fed through an LLM (Anthropic or OpenAI), which does its best to extract location data.
 - Finally, the location data is plotted onto the map as clickable pins.
 - (Additionally, each month of processed data is stored via [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database). Previously-processed months are fetched directly from the database to save on API calls.)
 
 ## Running locally
 
-*Please note: Running APOD Map locally requires that you provide 1) your own OpenAI API key, 2) your own NASA API key, and 3) your own MongoDB Atlas connection string.*
+*Please note: Running APOD Map locally requires that you provide 1) your own Anthropic/OpenAI API key, 2) your own NASA API key, and 3) your own MongoDB Atlas connection string.*
 
 Clone this repo and enter the home folder.
 
@@ -42,13 +42,16 @@ $ git clone git@github.com:michaelschung/apod-map.git apod-map
 $ cd apod-map
 ```
 
-This project relies on three environment variables. Create a file `backend/.env` and provide the following three variables:
+This project relies on three environment variables. Create a file `backend/.env` and provide the following variables (just one of the AI keys is sufficient):
 
 ```dotenv
+ANTHROPIC_API_KEY="sk-EXAMPLE"
 OPENAI_API_KEY="sk-EXAMPLE"
 NASA_API_KEY="EXAMPLE"
 MONGO_URI="mongodb+srv://EXAMPLE"
 ```
+
+The project is set up to use the Anthropic API by default, and to fall back on OpenAI if no anthropic API key is provided. Feel free to change this in `server.js`, in the line that declares the boolean `useClaude`.
 
 Run the provided `install:all` script to install dependencies for the entire project.
 
@@ -99,7 +102,7 @@ View the webpage by visiting [`localhost:3000`](http://localhost:3000/).
 A few things that I would eventually like to add:
 - **List view of the pins.** Ideally organized by date, appearing as a floating window on the left side of the map (think Google Maps). This would also allow me to include links to the photos that didn't make it through the location-extraction process.
 - **Personal API key input.** Probably via a pop-up modal. Not super urgent since DB caching enforces a strict upper bound on how many times the website will need to make API calls, but it could be nice in concept.
-- **Web search for improved location extraction.** The entire AI side of this works better in ChatGPT than through the OpenAI API, since ChatGPT is able to browse the Internet. But I think I'd have to pay for [Google Search API](https://developers.google.com/custom-search/v1/overview) access to support the requests that I'd want to make.
+- **Web search for improved location extraction.** The entire AI side of this works better in ChatGPT than through the Anthropic or OpenAI APIs, since ChatGPT is able to browse the Internet. But I think I'd have to pay for [Google Search API](https://developers.google.com/custom-search/v1/overview) access to support the requests that I'd want to make.
 
 ## Disclaimer
 
