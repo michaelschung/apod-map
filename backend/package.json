@@ -20,5 +20,6 @@
   },
   "engines": {
     "node": ">=23.3.0"
-  }
+  },
+  "type": "module"
 }

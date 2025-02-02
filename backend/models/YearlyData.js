@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const yearlyDataSchema = new mongoose.Schema(
     {
@@ -13,4 +13,4 @@ const yearlyDataSchema = new mongoose.Schema(
 
 const YearlyData = mongoose.model("YearlyData", yearlyDataSchema);
 
-module.exports = YearlyData;
+export default YearlyData;

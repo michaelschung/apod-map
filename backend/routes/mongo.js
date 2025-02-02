@@ -1,7 +1,7 @@
-const express = require("express");
-const YearlyData = require("../models/YearlyData");
+import express from "express";
+import YearlyData from "../models/YearlyData.js";
 
-module.exports = (mongo) => {
+export default (mongo) => {
     const router = express.Router();
 
     router.post("/get-month", async (req, res) => {

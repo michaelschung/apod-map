@@ -1,6 +1,6 @@
-const express = require("express");
+import express from "express";
 
-module.exports = (NASA_API_KEY) => {
+export default (NASA_API_KEY) => {
     const router = express.Router();
 
     router.get("/", async (req, res) => {

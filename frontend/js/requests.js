@@ -59,8 +59,8 @@ export async function openaiReq(apodData) {
         You are about to receive a JSON array containing data from NASA's
         Astronomy Picture of the Day archive, covering a range of dates.
         Please extract the following information from each object in the
-        array, and return the collated result as a single raw JSON blob. Do
-        not include markdown formatting or any other formatting.
+        array, and return the collated result as a single raw JSON array.
+        Do not include markdown formatting or any other formatting.
             - copyright: credit for the photo
             - date: date of the photo/video
             - location: location from which the photo/video was taken
@@ -100,6 +100,8 @@ export async function openaiReq(apodData) {
                 photographer, then use a web search to find the coordinates
                 of where that photographer is based.
             If all of the above fails, then leave out the "coords" attribute.
+        Final reminder: the format of your response should be an unformatted
+        JSON array.
     `
     // Keep making the request as long as OpenAI returns invalid JSON
     var parsedData = null;
