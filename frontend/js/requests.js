@@ -32,7 +32,7 @@ export async function writeToDB(year, month, data) {
 }
 
 // Fetches OpenAI completion from backend, using provided prompt
-async function openaiReqWithPrompt(sysPrompt, apodData) {
+async function llmReqWithPrompt(sysPrompt, apodData) {
     return await fetch("/api/openai/completion", {
         method: "POST",
         headers: {
@@ -54,7 +54,7 @@ Note to self:
 - Images taken from earth will also have (coords)
 - Videos will also have (thumb)
 */
-export async function openaiReq(apodData) {
+export async function llmReq(apodData) {
     const sysPrompt = `
         You are about to receive a JSON array containing data from NASA's
         Astronomy Picture of the Day archive, covering a range of dates.
@@ -109,7 +109,7 @@ export async function openaiReq(apodData) {
     while (!validJSON) {
         try {
             validJSON = true;
-            parsedData = await openaiReqWithPrompt(sysPrompt, JSON.stringify(apodData))
+            parsedData = await llmReqWithPrompt(sysPrompt, JSON.stringify(apodData))
                 .then((data) => JSON.parse(data));
         } catch (error) {
             console.log("OpenAI returned invalid JSON. Trying again.");

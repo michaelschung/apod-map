@@ -1,5 +1,5 @@
 import "../css/style.css";
-import { apodReq, openaiReq, getFromDB, writeToDB } from "./requests.js";
+import { apodReq, llmReq, getFromDB, writeToDB } from "./requests.js";
 import { initMap, addPins, clearPins, closePopup } from "./map.js";
 import flatpickr from "flatpickr";
 import monthSelectPlugin from "flatpickr/dist/plugins/monthSelect/index.js";
@@ -90,8 +90,8 @@ function batch_requests(year, month, data, batchSize) {
     var finished = 0;
     for (let i = 0; i < data.length; i += batchSize) {
         const batch = data.slice(i, i + batchSize);
-        // Send each batch to OpenAI API for processing
-        openaiReq(batch).then((parsedData) => {
+        // Send each batch to LLM for processing
+        llmReq(batch).then((parsedData) => {
             allParsedData.push(...parsedData);
             addPins(map, parsedData);
             finished++;
