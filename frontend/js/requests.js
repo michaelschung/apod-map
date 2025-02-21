@@ -33,7 +33,7 @@ export async function writeToDB(year, month, data) {
 
 // Fetches OpenAI completion from backend, using provided prompt
 async function llmReqWithPrompt(sysPrompt, apodData) {
-    return await fetch("/api/openai/completion", {
+    return await fetch("/api/ai/completion", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

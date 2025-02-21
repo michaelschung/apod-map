@@ -40,10 +40,10 @@ connect(MONGO_URI)
   .catch((err) => console.error("Error connecting to MongoDB:", err));
 
 // ===== API routes =====
-import openaiRoutes from "./routes/ai.js";
+import aiRoutes from "./routes/ai.js";
 import apodRoutes from "./routes/apod.js";
 import mongoRoutes from "./routes/mongo.js";
-app.use("/api/openai", openaiRoutes(llm, useClaude));
+app.use("/api/ai", aiRoutes(llm, useClaude));
 app.use("/api/apod", apodRoutes(NASA_API_KEY));
 app.use("/api/mongo", mongoRoutes(mongoose));
 
